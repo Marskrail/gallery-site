@@ -1,0 +1,530 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Моя Онлайн Галерея</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(109, 158, 235, 0.3);
+        }
+        
+        h1 {
+            color: #6d9eeb;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #6d9eeb, #5a8de6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: #a5d6a7;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        
+        .status {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #6d9eeb 0%, #5a8de6 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(109, 158, 235, 0.4);
+        }
+        
+        .search-box {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        #searchInput {
+            width: 80%;
+            max-width: 500px;
+            padding: 16px 25px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(109, 158, 235, 0.2);
+        }
+        
+        #searchInput:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #6d9eeb;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .image-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .image-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: #6d9eeb;
+        }
+        
+        .image-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .image-info {
+            padding: 20px;
+        }
+        
+        .image-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #6d9eeb;
+        }
+        
+        .image-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .tag {
+            background: rgba(109, 158, 235, 0.15);
+            color: #6d9eeb;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(109, 158, 235, 0.3);
+        }
+        
+        .upload-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .upload-input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 16px;
+        }
+        
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 40px;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Онлайн Галерея</h1>
+            <p class="subtitle">Добро пожаловать в мою коллекцию изображений!</p>
+            <p style="color: #6d9eeb; margin-top: 10px; font-size: 1.1rem;">
+                Размещено на GitHub Pages • Обновлено: 30.12.2024
+            </p>
+        </header>
+        
+        <div class="status">
+            <h2>🌐 Сайт работает онлайн!</h2>
+            <p>Все функции доступны прямо в браузере</p>
+        </div>
+        
+        <div class="controls">
+            <button onclick="loadAllImages()">
+                <span>🖼️</span> Показать все
+            </button>
+            <button onclick="searchByTag('природа')">
+                <span>🌳</span> Природа
+            </button>
+            <button onclick="searchByTag('горы')">
+                <span>⛰️</span> Горы
+            </button>
+            <button onclick="searchByTag('город')">
+                <span>🏙️</span> Город
+            </button>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Введите тег для поиска...">
+            <button onclick="searchImages()" style="display: inline-block; padding: 12px 30px;">Найти</button>
+        </div>
+        
+        <div class="gallery" id="galleryContainer">
+            <!-- Изображения загрузятся здесь -->
+            <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                <h3 style="color: #6d9eeb;">🎨 Галерея загружается...</h3>
+                <p style="color: #888;">Нажмите любую кнопку выше</p>
+            </div>
+        </div>
+        
+        <div class="upload-section">
+            <h2 style="color: #6d9eeb; margin-bottom: 20px;">📤 Добавить своё изображение</h2>
+            <input type="text" id="imageUrl" class="upload-input" placeholder="URL изображения (например: https://images.unsplash.com/...)">
+            <input type="text" id="imageTitle" class="upload-input" placeholder="Название изображения">
+            <input type="text" id="imageTags" class="upload-input" placeholder="Теги через запятую">
+            <div style="margin-top: 20px;">
+                <button onclick="addImage()">➕ Добавить в галерею</button>
+                <button onclick="addExampleImage()" style="background: rgba(255,255,255,0.1);">🎲 Пример</button>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3 style="color: #6d9eeb;">ℹ️ Как использовать:</h3>
+            <ol style="margin-left: 20px; margin-top: 10px;">
+                <li>Нажмите "Показать все" чтобы увидеть все изображения</li>
+                <li>Используйте кнопки тегов для быстрого поиска</li>
+                <li>Или введите свой тег в поисковую строку</li>
+                <li>Добавляйте свои изображения через форму выше</li>
+                <li>Данные сохраняются в вашем браузере</li>
+            </ol>
+            <p style="margin-top: 15px; color: #4CAF50;">
+                ✅ Галерея работает полностью в браузере • Не требует сервера • Бесплатный хостинг GitHub
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Данные галереи (хранятся в LocalStorage)
+        let images = [
+            {
+                id: 1,
+                title: "Лесной пейзаж",
+                url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=400&fit=crop",
+                tags: ["природа", "лес", "деревья"],
+                author: "admin",
+                date: "2024-12-30"
+            },
+            {
+                id: 2,
+                title: "Горные вершины",
+                url: "https://images.unsplash.com/photo-1464278533981-50106e6176b1?w=600&h=400&fit=crop",
+                tags: ["горы", "вершина", "скалы"],
+                author: "admin",
+                date: "2024-12-30"
+            },
+            {
+                id: 3,
+                title: "Ночной город",
+                url: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&h=400&fit=crop",
+                tags: ["город", "ночь", "огни"],
+                author: "user1",
+                date: "2024-12-30"
+            },
+            {
+                id: 4,
+                title: "Морской берег",
+                url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop",
+                tags: ["море", "пляж", "вода"],
+                author: "user2",
+                date: "2024-12-30"
+            },
+            {
+                id: 5,
+                title: "Зимний лес",
+                url: "https://images.unsplash.com/photo-1476820865390-c52aeebb9891?w=600&h=400&fit=crop",
+                tags: ["зима", "снег", "лес"],
+                author: "admin",
+                date: "2024-12-30"
+            },
+            {
+                id: 6,
+                title: "Пустынный пейзаж",
+                url: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&h=400&fit=crop",
+                tags: ["пустыня", "песок", "сухо"],
+                author: "admin",
+                date: "2024-12-30"
+            }
+        ];
+        
+        // Загрузка из LocalStorage
+        function loadFromStorage() {
+            const saved = localStorage.getItem('gallery_images');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        images = parsed;
+                    }
+                } catch (e) {
+                    console.log('Ошибка загрузки из хранилища');
+                }
+            }
+        }
+        
+        // Сохранение в LocalStorage
+        function saveToStorage() {
+            localStorage.setItem('gallery_images', JSON.stringify(images));
+        }
+        
+        // Загрузка всех изображений
+        function loadAllImages() {
+            displayImages(images);
+            showMessage(`Загружено ${images.length} изображений`, 'success');
+        }
+        
+        // Поиск по тегам
+        function searchImages() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!query) {
+                loadAllImages();
+                return;
+            }
+            
+            const results = images.filter(img => 
+                img.tags.some(tag => tag.toLowerCase().includes(query)) ||
+                img.title.toLowerCase().includes(query)
+            );
+            
+            if (results.length > 0) {
+                displayImages(results);
+                showMessage(`Найдено ${results.length} изображений по запросу "${query}"`, 'success');
+            } else {
+                displayImages([]);
+                showMessage(`По запросу "${query}" ничего не найдено`, 'info');
+            }
+        }
+        
+        // Быстрый поиск по тегу
+        function searchByTag(tag) {
+            document.getElementById('searchInput').value = tag;
+            searchImages();
+        }
+        
+        // Показать изображения
+        function displayImages(imagesToShow) {
+            const container = document.getElementById('galleryContainer');
+            
+            if (!imagesToShow || imagesToShow.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #888;">
+                        <h3 style="color: #6d9eeb;">😔 Изображений не найдено</h3>
+                        <p>Попробуйте другой поисковый запрос</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            imagesToShow.forEach(img => {
+                html += `
+                    <div class="image-card">
+                        <img src="${img.url}" alt="${img.title}" 
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop'">
+                        <div class="image-info">
+                            <h3 class="image-title">${img.title}</h3>
+                            <div class="image-tags">
+                                ${img.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            </div>
+                            <div style="margin-top: 15px; color: #888; font-size: 0.9rem; display: flex; justify-content: space-between;">
+                                <span>👤 ${img.author}</span>
+                                <span>📅 ${img.date}</span>
+                                <button onclick="removeImage(${img.id})" 
+                                        style="background: rgba(244,67,54,0.2); color: #f44336; border: 1px solid rgba(244,67,54,0.3); 
+                                               padding: 3px 10px; border-radius: 5px; font-size: 0.8rem; cursor: pointer;">
+                                    ✖ Удалить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // Добавить изображение
+        function addImage() {
+            const url = document.getElementById('imageUrl').value.trim();
+            const title = document.getElementById('imageTitle').value.trim();
+            const tagsInput = document.getElementById('imageTags').value.trim();
+            
+            if (!url) {
+                showMessage('Введите URL изображения!', 'error');
+                return;
+            }
+            
+            if (!title) {
+                showMessage('Введите название изображения!', 'error');
+                return;
+            }
+            
+            const tags = tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag);
+            
+            const newImage = {
+                id: Date.now(),
+                title: title,
+                url: url,
+                tags: tags.length > 0 ? tags : ['без тега'],
+                author: 'Вы',
+                date: new Date().toISOString().split('T')[0]
+            };
+            
+            images.push(newImage);
+            saveToStorage();
+            
+            // Очистить поля
+            document.getElementById('imageUrl').value = '';
+            document.getElementById('imageTitle').value = '';
+            document.getElementById('imageTags').value = '';
+            
+            loadAllImages();
+            showMessage('✅ Изображение добавлено!', 'success');
+        }
+        
+        // Добавить пример изображения
+        function addExampleImage() {
+            const examples = [
+                {
+                    url: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&h=400&fit=crop',
+                    title: 'Звездное небо',
+                    tags: 'космос, звезды, ночь'
+                },
+                {
+                    url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=600&h=400&fit=crop',
+                    title: 'Закат на море',
+                    tags: 'закат, море, небо'
+                }
+            ];
+            
+            const example = examples[Math.floor(Math.random() * examples.length)];
+            document.getElementById('imageUrl').value = example.url;
+            document.getElementById('imageTitle').value = example.title;
+            document.getElementById('imageTags').value = example.tags;
+        }
+        
+        // Удалить изображение
+        function removeImage(id) {
+            if (confirm('Удалить это изображение из галереи?')) {
+                images = images.filter(img => img.id !== id);
+                saveToStorage();
+                loadAllImages();
+                showMessage('Изображение удалено', 'info');
+            }
+        }
+        
+        // Показать сообщение
+        function showMessage(text, type) {
+            const statusDiv = document.querySelector('.status');
+            const originalHTML = statusDiv.innerHTML;
+            
+            const colors = {
+                success: '#4CAF50',
+                error: '#f44336',
+                info: '#2196F3'
+            };
+            
+            statusDiv.innerHTML = `
+                <h2 style="color: ${colors[type] || '#6d9eeb'};">${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'} ${text}</h2>
+            `;
+            
+            setTimeout(() => {
+                statusDiv.innerHTML = originalHTML;
+            }, 3000);
+        }
+        
+        // Загрузить при старте
+        loadFromStorage();
+        loadAllImages();
+        
+        // Поиск по Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchImages();
+            }
+        });
+    </script>
+</body>
+</html>
